@@ -18,27 +18,35 @@
 #   this function terminates the program with error code 76.
 # =======================================================
 dot:
+    ble a2, zero, termi75
+    ble a3, zero, termi76
+    ble a4, zero, termi76
 
-    # Prologue
-
+    slli a3, a3, 2 # *= 4
+    slli a4, a4, 2
+    li t0, 0 # t0: res
+    li t1, 0 # t1: k
 
 loop_start:
-
-
-
-
-
-
-
-
-
-
-
+    beq t1, a2, loop_end
+    lw t2, 0(a0) # a[i]
+    lw t3, 0(a1) # b[j]
+    mul t4, t2, t3 # a[i]*b[j]
+    add t0, t0, t4
+    add a0, a0, a3
+    add a1, a1, a4
+    addi t1, t1, 1
+    j loop_start
 
 loop_end:
-
-
-    # Epilogue
-
-    
+    mv a0, t0
     ret
+
+
+termi75:
+    li a1, 75
+    j exit2
+
+termi76:
+    li a1, 76
+    j exit2
