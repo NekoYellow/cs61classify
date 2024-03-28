@@ -49,7 +49,6 @@ matmul:
     mv s6, a6 # s6: C
 
     slli s2, s2, 2 # *= 2
-    slli s5, s5, 2
     li t0, 0 # t0: i
 
 outer_loop_start:
@@ -63,7 +62,7 @@ inner_loop_start:
     mv a1, s3
     mv a2, s4
     li a3, 1
-    mv a4, s4
+    mv a4, s5
 
     addi sp, sp, -8
     sw t0, 0(sp)
@@ -80,11 +79,12 @@ inner_loop_start:
     addi s3, s3, 4
     addi s6, s6, 4
 
-    addi t1, t1, 4
+    addi t1, t1, 1
     j inner_loop_start
 
 inner_loop_end:
-    sub s3, s3, s5
+    slli t2, s5, 2 # t2: p*4
+    sub s3, s3, t2
     add s0, s0, s2
     addi t0, t0, 1
     j outer_loop_start
